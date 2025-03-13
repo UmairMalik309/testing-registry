@@ -1,0 +1,20 @@
+name: Docker Pull
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  pull-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Private Docker Registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login 192.168.1.148:5000 -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Pull Docker Image
+        run: docker pull 192.168.1.148:5000/ubuntu:latest
